@@ -47,7 +47,7 @@ func (l *Logger) ApplyConfig() {
 
 	if conf.fileOut.enable {
 		fileWriter := getFileWriter(
-			conf.fileOut.path,
+			conf.fileOut.fileName,
 			conf.fileOut.maxSize,
 			conf.fileOut.maxBackups,
 			conf.fileOut.maxAge,

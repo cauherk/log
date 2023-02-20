@@ -15,11 +15,12 @@ type Config struct {
 }
 
 type fileOut struct {
-	enable        bool   //是否将日志输出到文件
-	path          string //日志保存路径
-	name          string //日志保存的名称，不些随机生成
-	rotationTime  uint   //日志切割时间间隔(小时)
-	rotationCount uint   //文件最大保存份数
+	enable     bool   //是否将日志输出到文件
+	fileName   string //日志文件的位置；
+	maxSize    int    //在进行切割之前，日志文件的最大大小（以MB为单位）；
+	maxBackups int    //保留旧文件的最大个数；
+	maxAge     int    //保留旧文件的最大天数；
+	compress   bool   //是否压缩/归档旧文件；
 }
 
 func newConfig() *Config {
@@ -32,11 +33,12 @@ func newConfig() *Config {
 		jsonFormat:      true,
 		consoleOut:      true,
 		fileOut: &fileOut{
-			enable:        false,
-			path:          "",
-			name:          "",
-			rotationTime:  24,
-			rotationCount: 7,
+			enable:     false,
+			fileName:   "",
+			maxSize:    10,
+			maxBackups: 3,
+			maxAge:     3,
+			compress:   true,
 		},
 	}
 }
@@ -82,10 +84,11 @@ func (c *Config) DisableConsoleOut() {
 }
 
 /*SetFileOut 设置日志输出文件*/
-func (c *Config) SetFileOut(path, name string, rotationTime, rotationCount uint) {
+func (c *Config) SetFileOut(fileName string, maxSize, maxBackups, maxAge int, compress bool) {
 	c.fileOut.enable = true
-	c.fileOut.path = path
-	c.fileOut.name = name
-	c.fileOut.rotationTime = rotationTime
-	c.fileOut.rotationCount = rotationCount
+	c.fileOut.fileName = fileName
+	c.fileOut.maxSize = maxSize
+	c.fileOut.maxBackups = maxBackups
+	c.fileOut.maxAge = maxAge
+	c.fileOut.compress = compress
 }

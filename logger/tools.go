@@ -1,13 +1,10 @@
 package logger
 
 import (
-	"io"
-	"path/filepath"
-	"time"
-
-	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"io"
 )
 
 func getEncoder() zapcore.EncoderConfig {
@@ -45,14 +42,14 @@ func getLevel(level string) zapcore.Level {
 	}
 }
 
-func getFileWriter(path, name string, rotationTime, rotationCount uint) io.Writer {
-	writer, err := rotatelogs.New(
-		filepath.Join(path, name+".%Y%m%d%H.log"),
-		rotatelogs.WithRotationTime(time.Duration(rotationTime)*time.Hour), // 日志切割时间间隔
-		rotatelogs.WithRotationCount(rotationCount),                        // 文件最大保存份数
-	)
-	if err != nil {
-		panic(err)
+func getFileWriter(fileName string, maxSize, maxBackups, maxAge int, compress bool) io.Writer {
+	lumberJackLogger := &lumberjack.Logger{
+		Filename:   fileName,
+		MaxSize:    maxSize,
+		MaxBackups: maxBackups,
+		MaxAge:     maxAge,
+		Compress:   compress,
 	}
-	return writer
+
+	return lumberJackLogger
 }

@@ -7,4 +7,5 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.6 // indirect
 	go.uber.org/zap v1.21.0
+	github.com/natefinch/lumberjack v2.0.0+incompatible
 )

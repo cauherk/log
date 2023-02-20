@@ -48,9 +48,10 @@ func (l *Logger) ApplyConfig() {
 	if conf.fileOut.enable {
 		fileWriter := getFileWriter(
 			conf.fileOut.path,
-			conf.fileOut.name,
-			conf.fileOut.rotationTime,
-			conf.fileOut.rotationCount,
+			conf.fileOut.maxSize,
+			conf.fileOut.maxBackups,
+			conf.fileOut.maxAge,
+			conf.fileOut.compress,
 		)
 		writer := zapcore.AddSync(fileWriter)
 		core := zapcore.NewCore(encoder, writer, conf.atomicLevel)

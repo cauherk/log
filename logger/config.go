@@ -1,6 +1,9 @@
 package logger
 
-import "go.uber.org/zap"
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
 
 /*Config log配置文件*/
 type Config struct {
@@ -12,6 +15,7 @@ type Config struct {
 	jsonFormat      bool            //输出json格式
 	consoleOut      bool            //是否输出到console
 	fileOut         *fileOut
+	encoderConfig   *zapcore.EncoderConfig
 }
 
 type fileOut struct {
@@ -81,6 +85,11 @@ func (c *Config) EnableConsoleOut() {
 /*DisableConsoleOut 关闭Console输出*/
 func (c *Config) DisableConsoleOut() {
 	c.consoleOut = false
+}
+
+/*SetEncoderConfig 设置encoderConfig*/
+func (c *Config) SetEncoderConfig(encoderConfig *zapcore.EncoderConfig) {
+	c.encoderConfig = encoderConfig
 }
 
 /*SetFileOut 设置日志输出文件*/

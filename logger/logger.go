@@ -30,9 +30,9 @@ func (l *Logger) ApplyConfig() {
 	var encoder zapcore.Encoder
 
 	if conf.jsonFormat {
-		encoder = zapcore.NewJSONEncoder(getEncoder())
+		encoder = zapcore.NewJSONEncoder(getEncoder(conf.encoderConfig))
 	} else {
-		encoderConfig := getEncoder()
+		encoderConfig := getEncoder(conf.encoderConfig)
 		encoderConfig.ConsoleSeparator = " "
 		encoder = zapcore.NewConsoleEncoder(encoderConfig)
 	}

@@ -7,7 +7,11 @@ import (
 	"io"
 )
 
-func getEncoder() zapcore.EncoderConfig {
+func getEncoder(defaultEncoderConfig *zapcore.EncoderConfig) zapcore.EncoderConfig {
+	if defaultEncoderConfig != nil {
+		return *defaultEncoderConfig
+	}
+	
 	return zapcore.EncoderConfig{
 		LevelKey:       "L",
 		TimeKey:        "T",

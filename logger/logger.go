@@ -11,6 +11,7 @@ import (
 type Logger struct {
 	Config *Config
 	logger *zap.SugaredLogger
+	base   *zap.Logger
 }
 
 /*New New Logger*/
@@ -73,6 +74,7 @@ func (l *Logger) ApplyConfig() {
 	defer logger.Sync()
 
 	l.logger = logger.Sugar()
+	l.base = l.logger.Desugar()
 }
 
 /*Debug Debug log*/
@@ -163,4 +165,24 @@ func (l *Logger) Fatalf(template string, args ...interface{}) {
 /*Fatalw Fatalw log*/
 func (l *Logger) Fatalw(msg string, keysAndValues ...interface{}) {
 	l.logger.Fatalw(msg, keysAndValues...)
+}
+
+func (l *Logger) IsDebugEnabled() bool {
+	return l.base.Core().Enabled(zapcore.DebugLevel)
+}
+
+func (l *Logger) IsInfoEnabled() bool {
+	return l.base.Core().Enabled(zapcore.InfoLevel)
+}
+
+func (l *Logger) IsWarnEnabled() bool {
+	return l.base.Core().Enabled(zapcore.WarnLevel)
+}
+
+func (l *Logger) IsErrorEnabled() bool {
+	return l.base.Core().Enabled(zapcore.ErrorLevel)
+}
+
+func (l *Logger) IsFatalEnabled() bool {
+	return l.base.Core().Enabled(zapcore.FatalLevel)
 }

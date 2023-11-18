@@ -38,7 +38,8 @@ func (l *Logger) ApplyConfig() {
 		encoder = zapcore.NewConsoleEncoder(encoderConfig)
 	}
 
-	conf.atomicLevel.SetLevel(getLevel(conf.defaultLogLevel))
+	conf.defaultLogLevel = conf.atomicLevel.String()
+	//conf.atomicLevel.SetLevel(conf.atomicLevel.Level())
 
 	if conf.consoleOut {
 		writer := zapcore.Lock(os.Stdout)
